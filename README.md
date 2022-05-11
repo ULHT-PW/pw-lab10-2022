@@ -52,6 +52,8 @@ admin.site.register(Cadeira)
 
 ## 2. Autenticação 👦👧
 * Crie uma pagina de autenticação. Só utilizadores autenticados poderão criar novos conteúdos, à excepção das páginas inerentemente públicas (quizz, blog, etc).
+* sempre que necessário, valide se o utilizador está [autenticado](https://github.com/ULHT-PW/pw-aula-django-02-simples/blob/73aca0dca612a04999c52c773e672f3027154b02/tarefas/views.py#L46)
+* utilize o decorador [`@login_required`](https://github.com/ULHT-PW/pw-aula-django-02-simples/blob/73aca0dca612a04999c52c773e672f3027154b02/tarefas/views.py#L58) nas views que requerem autenticação. e utilize 
 
 ## 2. Formulario
 * Para cada página que lista conteúdos, deverá criar um formulário para criar uma nova entrada (uma nova cadeira, projeto, TFC, etc). 
