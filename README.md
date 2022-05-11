@@ -79,6 +79,13 @@ Mantenha o seu projeto sincronizado com o GitHub assim como o Heroku
 
 Passos para ter um campo para carregar corretamente uma imagem para uma pasta que queiramos:
 
+0. Instalar o pillow no ambiente virtual ativado
+
+```bash
+pipenv shell
+python -m pip install Pillow
+```
+
 1. Primeiro devemos dar instruções para criar uma pasta (MEDIA) onde guardar as imagens. Colocar em settings.py:
 
 ```Python
