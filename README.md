@@ -14,7 +14,8 @@
 * Deverá garantir relaçoes 1:1, 1:N e N:M
 * Veja o exemplo feito na [aula](https://github.com/ULHT-PW/pw-aula-django-02-simples/blob/main/flights/models.py)
 * Passos:
-   1. criar a classe no `models.py`, pode exemplo `class Cadeira(models.Model)`
+
+#### 1. **criar cada classe** no `models.py`, pode exemplo `class Cadeira(models.Model)`
 
 ```Python
 # models.py
@@ -31,7 +32,7 @@ class Cadeira(models.Model):
    
 ```
 
-   2. registar cada classe em `admin.py` da seguinte forma (para poder manipular na aplicação Admin):
+#### 2. **registar em admin** cada classe, em `admin.py` da seguinte forma (para poder manipular na aplicação Admin):
 
 ```Python
 # admin.py
@@ -41,14 +42,18 @@ from .models import Cadeira
 admin.site.register(Cadeira)
 ```
 
-   3. migrar:
+#### 3. **migrar**:
 ```bash
 > python manage.py makemigrations
 > python manage.py migrate
 ```
 
-   4. Abrir a aplicação em admin, `127.0.0.1:8000/admin`
-   5. Inserir dados na aplicação admin. Atenção que deverá primeiro criar todas as classses, e só depois começar a inserir dados na base de dados.
+#### 4. Abrir a aplicação em admin
+* Entre em `127.0.0.1:8000/admin`
+* Deve ter uma conta de superuser criada (descrito em lab9, se não tiver)
+
+#### 5. Inserir dados na aplicação admin. 
+Atenção que deverá primeiro criar todas as classses, e só depois começar a inserir dados na base de dados.
 
 ## 2. Autenticação 👦👧
 * Crie uma pagina de autenticação. Só utilizadores autenticados poderão criar novos conteúdos, à excepção das páginas inerentemente públicas (quizz, blog, etc).
