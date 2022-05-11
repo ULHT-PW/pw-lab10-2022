@@ -71,9 +71,15 @@ Atenção que deverá primeiro criar todas as classses, e só depois começar a 
 
 Mantenha o seu projeto sincronizado com o GitHub assim como o Heroku
 
+Garanta que tem submetido no formulário disponivel no Moodle:
+* o link para o repo do seu portfolio
+* o link para o repo do material recolhido
+* o link para a aplicação a correr no Heroku
 
 
-## <a name="ImageField"></a> campo ImageField
+
+
+## Carregando e mostrando imagens com o <a name="ImageField"></a> campo ImageField
 
 
 * [How to manage static files](https://docs.djangoproject.com/en/4.0/howto/static-files/)
@@ -81,14 +87,14 @@ Mantenha o seu projeto sincronizado com o GitHub assim como o Heroku
 
 Passos para ter um campo para carregar corretamente uma imagem para uma pasta que queiramos:
 
-0. Instalar o pillow no ambiente virtual ativado
+#### 0. Instalar o pillow no ambiente virtual ativado
 
 ```bash
 pipenv shell
 python -m pip install Pillow
 ```
 
-1. Primeiro devemos dar instruções para criar uma pasta (MEDIA) onde guardar as imagens. Colocar em settings.py:
+#### 1. Primeiro devemos dar instruções para criar uma pasta (MEDIA) onde guardar as imagens. Colocar em settings.py:
 
 ```Python
 # settings.py
@@ -98,7 +104,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 ```
 
-2. no app/urls.py   (funciona no config/urls.py ?!): 
+#### 2. no app/urls.py   (funciona no config/urls.py ?!): 
 
 ```Python
 # config/urls.py
@@ -109,24 +115,33 @@ from django.conf.urls.static import static
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
 
-Depois podemos utilizar na definição do atributo da classe. Podemos especificar  no `upload_to` a pasta, dentro da pasta MEDIA, onde queremos guardar. Por exemplo, em baixo queremos guardar uma imagem duma resposta duma resolução (com id 3) de um teste feito por um paciente (com id 1) em `users/1/resolutions/3`:
+
+#### 3. Classe com atributo image e argumento upload_to
+
+Depois podemos utilizar na definição do atributo da classe. Podemos especificar  no `upload_to` a pasta, dentro da pasta MEDIA, onde queremos guardar as imagens. Por exemplo, em baixo queremos guardar uma imagem duma resposta dum determinado utilizador. Usamos o seu id no nome da pasta por forma a que as imagens fiquem organizadas por utilizador. Usa-se uma função auxiliar para determinar o caminho:
+
 
 ```Python
 # views.py
 
 def resolution_path(instance, filename):
-    return f'users/{instance.resolution.patient.id}/resolutions/{instance.resolution.id}'
-    
+    return f'users/{instance.id}/'
     
 class Answer(models.Model):
-    question = models.ForeignKey('Question',
-                                 on_delete=models.CASCADE)
-    resolution = models.ForeignKey('Resolution',on_delete=models.CASCADE)
-    submitted_answer = models.ImageField(upload_to=resolution_path)
+    name = models.CharField(max_length=40)
+    fotografia = models.ImageField(upload_to=resolution_path)
+```
+
+#### 4. No HTML, formulário incluir sempre `enctype="multipart/form-data"`
+
+```html
+  <form method = "post" enctype="multipart/form-data"> 
 ```
 
 
-Garanta que tem submetido no formulário disponivel no Moodle:
-* o link para o repo do seu portfolio
-* o link para o repo do material recolhido
-* o link para a aplicação a correr no Heroku
+No html deve-se inserir no especificador o campo `url` da imagem
+```html
+ <img src="{{pessoa.fotografia.url}}" alt="retrato" width="250" height="250">
+```
+
+
