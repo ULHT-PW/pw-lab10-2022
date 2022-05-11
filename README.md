@@ -10,7 +10,7 @@
 
 ## 1. Implementação da base de dados 🛢
 * Implemente as classes que identificou no DER que fez no lab9
-* deverá usar entre outros campos de FileField e ImageField.
+* deverá usar entre outros campos de FileField e [ImageField](#ImageField).
 * Deverá garantir relaçoes 1:1, 1:N e N:M
 * Veja o exemplo feito na [aula](https://github.com/ULHT-PW/pw-aula-django-02-simples/blob/main/flights/models.py)
 * Passos:
@@ -70,6 +70,52 @@ Atenção que deverá primeiro criar todas as classses, e só depois começar a 
 ## 3. Submissão 🏁
 
 Mantenha o seu projeto sincronizado com o GitHub assim como o Heroku
+
+
+
+## <a name="ImageField"></a> campo ImageField
+
+[How to manage static files](https://docs.djangoproject.com/en/4.0/howto/static-files/)
+
+Passos para ter um campo para carregar corretamente uma imagem para uma pasta que queiramos:
+
+1. Primeiro devemos dar instruções para criar uma pasta (MEDIA) onde guardar as imagens. Colocar em settings.py:
+
+```Python
+# settings.py
+
+import os
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+```
+
+2. no app/urls.py   (funciona no config/urls.py ?!): 
+
+```Python
+# config/urls.py
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+Depois podemos utilizar na definição do atributo da classe. Podemos especificar  no `upload_to` a pasta, dentro da pasta MEDIA, onde queremos guardar. Por exemplo, em baixo queremos guardar uma imagem duma resposta duma resolução (com id 3) de um teste feito por um paciente (com id 1) em `users/1/resolutions/3`:
+
+```Python
+# views.py
+
+def resolution_path(instance, filename):
+    return f'users/{instance.resolution.patient.id}/resolutions/{instance.resolution.id}'
+    
+    
+class Answer(models.Model):
+    question = models.ForeignKey('Question',
+                                 on_delete=models.CASCADE)
+    resolution = models.ForeignKey('Resolution',on_delete=models.CASCADE)
+    submitted_answer = models.ImageField(upload_to=resolution_path)
+```
+
 
 Garanta que tem submetido no formulário disponivel no Moodle:
 * o link para o repo do seu portfolio
