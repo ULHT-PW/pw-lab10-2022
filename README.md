@@ -10,7 +10,7 @@
 
 ## 1. Implementação da base de dados 🛢
 * Implemente as classes que identificou no DER que fez no lab9
-* deverá usar entre outros campos de FileField e [ImageField](#ImageField).
+* deverá usar entre outros campos de FileField e [ImageField](#ImageField). **O Heroku não permite guardar imagens e ficheiros. Deverá usar o Cloudinary. Veja [aqui](https://github.com/ULHT-PW/pw-photos/blob/main/README.md) como fazer. É bastante simples.**
 * Deverá garantir relaçoes 1:1, 1:N e N:M
 * Veja o exemplo feito na [aula](https://github.com/ULHT-PW/pw-aula-django-02-simples/blob/main/flights/models.py)
 * Passos:
