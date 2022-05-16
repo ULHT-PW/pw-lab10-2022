@@ -85,9 +85,9 @@ Garanta que tem submetido no formulário disponivel no Moodle:
 * [How to manage static files](https://docs.djangoproject.com/en/4.0/howto/static-files/)
 * [How to upload and display images](https://studygyaan.com/django/how-to-upload-and-display-image-in-django)
 
-Passos para ter um campo para carregar corretamente uma imagem para uma pasta que queiramos:
+Passos para ter um campo para carregar corretamente uma imagem para uma pasta que queiramos.
 
-#### 0. Instalar o pillow no ambiente virtual ativado
+#### 1. Instalar o pillow no ambiente virtual ativado
 
 ```bash
 pipenv shell
@@ -96,7 +96,12 @@ pipenv install Pillow
 
 (se não conseguir, use `python -m pip install Pillow`)
 
-#### 1. Primeiro devemos dar instruções para criar uma pasta (MEDIA) onde guardar as imagens. Colocar em settings.py:
+#### 1. Criar conta no cloudinary
+
+* criar conta no cloudinary
+* ir buscar informação de CLOUD_NAME, API_KEY e API_SECRET disponíveis em Dashboard
+
+#### 2. Primeiro devemos dar instruções para criar uma pasta (MEDIA) onde guardar as imagens. Colocar em settings.py:
 
 ```Python
 # settings.py
@@ -104,9 +109,17 @@ pipenv install Pillow
 import os
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+  'CLOUD_NAME': 'especificar',
+  'API_KEY': 'especificar',
+  'API_SECRET': 'especificar',
+}
 ```
 
-#### 2. em config/urls.py: 
+#### 3. em config/urls.py: 
 
 ```Python
 # config/urls.py
@@ -118,7 +131,7 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
 
 
-#### 3. Classe com atributo image e argumento upload_to
+#### 4. Classe com atributo image e argumento upload_to
 
 Depois podemos utilizar na definição do atributo da classe. Podemos especificar  no `upload_to` a pasta, dentro da pasta MEDIA, onde queremos guardar as imagens. Por exemplo, em baixo queremos guardar uma imagem duma resposta dum determinado utilizador. Usamos o seu id no nome da pasta por forma a que as imagens fiquem organizadas por utilizador. Usa-se uma função auxiliar para determinar o caminho:
 
@@ -129,19 +142,18 @@ Depois podemos utilizar na definição do atributo da classe. Podemos especifica
 def resolution_path(instance, filename):
     return f'users/{instance.id}/'
     
-class Answer(models.Model):
-    name = models.CharField(max_length=40)
+class Pessoa(models.Model):
+    nome = models.CharField(max_length=40)
     fotografia = models.ImageField(upload_to=resolution_path)
 ```
 
-#### 4. No HTML, formulário incluir sempre `enctype="multipart/form-data"`
+#### 5. No HTML, formulário incluir sempre `enctype="multipart/form-data"`
 
 ```html
   <form method = "post" enctype="multipart/form-data"> 
 ```
 
-
-No html deve-se inserir no especificador o campo `url` da imagem
+No html deve-se inserir no especificador o campo `url` da imagem:
 ```html
  <img src="{{pessoa.fotografia.url}}" alt="retrato" width="250" height="250">
 ```
