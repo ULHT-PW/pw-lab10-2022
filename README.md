@@ -87,11 +87,12 @@ Garanta que tem submetido no formulário disponivel no Moodle:
 
 Passos para ter um campo para carregar corretamente uma imagem para uma pasta que queiramos.
 
-#### 1. Instalar o pillow no ambiente virtual ativado
+#### 1. Instalar o `pillow` e `django-cloudinary-storage` no ambiente virtual ativado
 
 ```bash
 pipenv shell
 pipenv install Pillow
+pipenv install django-cloudinary-storage
 ```
 
 (se não conseguir, use `python -m pip install Pillow`)
