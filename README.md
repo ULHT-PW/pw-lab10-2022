@@ -89,38 +89,64 @@ Passos para ter um campo para carregar corretamente uma imagem para uma pasta qu
 
 #### 1. Instalar o `pillow` e `django-cloudinary-storage` no ambiente virtual ativado
 
-```bash
-pipenv shell
-pipenv install Pillow
+```console
 pipenv install django-cloudinary-storage
+pipenv install Pillow
+```
+notas:
+* usamos o package [django-cloudinary-storage](https://github.com/klis87/django-cloudinary-storage) que permite usar ImageField que guardam a imagem em Cloudinary
+* Pillow permite usar ImageField (se não conseguir instalar com pipenv, use `python -m pip install Pillow`)
+* guarda-se em requirements.txt os packages instalados em [venv](https://docs.python.org/3/tutorial/venv.html). 
+
+
+#### 2. Criação de conta em [cloudinary.com](https://cloudinary.com/)
+* criar conta em cloudinary 
+* product: programmable media
+* ir a dashboard onde se visualizam as configurações
+
+
+#### 3.A settings.py:
+
+* em INSTALLED_APPS, adicionar 
+```Python
+INSTALLED_APPS += [
+   'cloudinary_storage',
+   'cloudinary',
+   '<nome da aplicação criada>'
+]
 ```
 
-(se não conseguir, use `python -m pip install Pillow`)
+* incluir, no final do ficheiro, as credenciais da conta no cloudinary (na conta do cloudinary.com, no Dashboard, ir buscar os dados cloud_name, api_key, api_secret):
+```python
+CLOUDINARY_STORAGE = {
+  'CLOUD_NAME': "your_Cloud_name",
+  'API_KEY': "your_api_key",
+  'API_SECRET': "your_api_secret",
+}
+```
+   
+* especificar nome da pasta a criar no cloudinary para guardar ficheiros da aplicação
+```
+MEDIA_URL = '/<nome da aplicaçao>/'
 
-#### 1. Criar conta no cloudinary
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+```
+* Primeiro devemos dar instruções para criar uma pasta (MEDIA) onde guardar as imagens. Colocar em 
 
-* criar conta no cloudinary
-* ir buscar informação de CLOUD_NAME, API_KEY e API_SECRET disponíveis em Dashboard
 
-#### 2. Primeiro devemos dar instruções para criar uma pasta (MEDIA) onde guardar as imagens. Colocar em settings.py:
 
+#### 3.B outra forma de configurar 
+
+* alternativamente pode tambem incluir:
 ```Python
 # settings.py
 
 import os
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-CLOUDINARY_STORAGE = {
-  'CLOUD_NAME': 'especificar',
-  'API_KEY': 'especificar',
-  'API_SECRET': 'especificar',
-}
 ```
 
-#### 3. em config/urls.py: 
+* e em urls:
 
 ```Python
 # config/urls.py
