@@ -106,7 +106,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 ```
 
-#### 2. no app/urls.py   (funciona no config/urls.py ?!): 
+#### 2. em config/urls.py: 
 
 ```Python
 # config/urls.py
