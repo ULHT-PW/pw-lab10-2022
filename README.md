@@ -91,8 +91,10 @@ Passos para ter um campo para carregar corretamente uma imagem para uma pasta qu
 
 ```bash
 pipenv shell
-python -m pip install Pillow
+pipenv install Pillow
 ```
+
+(se não conseguir, use `python -m pip install Pillow`)
 
 #### 1. Primeiro devemos dar instruções para criar uma pasta (MEDIA) onde guardar as imagens. Colocar em settings.py:
 
